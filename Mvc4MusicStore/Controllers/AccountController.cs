@@ -10,6 +10,8 @@ using Microsoft.Web.WebPages.OAuth;
 using WebMatrix.WebData;
 using Mvc4MusicStore.Filters;
 using Mvc4MusicStore.Models;
+using OktaProviders;
+using System.Configuration;
 
 namespace Mvc4MusicStore.Controllers
 {
@@ -48,7 +50,23 @@ namespace Mvc4MusicStore.Controllers
             {
                 MigrateShoppingCart(model.UserName);
 
-                return RedirectToLocal(returnUrl);
+                if (HttpContext.Items.Contains(model.UserName))
+                {
+                    // If we have a cookieToken, redirect the user to Okta so that they get a cookie from Okta too.
+                    var cookieToken = HttpContext.Items[model.UserName] as String;
+                    var oktaApiUrl = new Uri(ConfigurationManager.AppSettings["okta:ApiUrl"]);
+                    var redirectUrl = this.Url.Action("Index", "Home", null, this.Request.Url.Scheme);
+                    
+                    var cookieTokenUrl = String.Format("{0}login/sessionCookieRedirect?token={1}&redirectUrl={2}",
+                        oktaApiUrl.AbsoluteUri,
+                        cookieToken,
+                        redirectUrl);
+                    return Redirect(cookieTokenUrl);
+                }
+                else
+                {
+                    return RedirectToLocal(returnUrl);
+                }
             }
 
             // If we got this far, something failed, redisplay form
@@ -90,7 +108,7 @@ namespace Mvc4MusicStore.Controllers
                 // Attempt to register the user
                 try
                 {
-                    WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
+                    WebSecurity.CreateUserAndAccount(model.UserName, model.Password, model);
                     WebSecurity.Login(model.UserName, model.Password);
                     MigrateShoppingCart(model.UserName);
                     return RedirectToAction("Index", "Home");
@@ -121,7 +139,7 @@ namespace Mvc4MusicStore.Controllers
                 // Use a transaction to prevent the user from deleting their last login credential
                 using (var scope = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions { IsolationLevel = IsolationLevel.Serializable }))
                 {
-                    bool hasLocalAccount = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
+                    bool hasLocalAccount = true; // OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
                     if (hasLocalAccount || OAuthWebSecurity.GetAccountsFromUserName(User.Identity.Name).Count > 1)
                     {
                         OAuthWebSecurity.DeleteAccount(provider, providerUserId);
@@ -144,7 +162,7 @@ namespace Mvc4MusicStore.Controllers
                 : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
                 : message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
                 : "";
-            ViewBag.HasLocalPassword = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
+            ViewBag.HasLocalPassword = true; // OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
             ViewBag.ReturnUrl = Url.Action("Manage");
             return View();
         }
@@ -156,7 +174,7 @@ namespace Mvc4MusicStore.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Manage(LocalPasswordModel model)
         {
-            bool hasLocalAccount = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
+            bool hasLocalAccount = true; // OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
             ViewBag.HasLocalPassword = hasLocalAccount;
             ViewBag.ReturnUrl = Url.Action("Manage");
             if (hasLocalAccount)
@@ -336,7 +354,7 @@ namespace Mvc4MusicStore.Controllers
                 });
             }
 
-            ViewBag.ShowRemoveButton = externalLogins.Count > 1 || OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
+            ViewBag.ShowRemoveButton = externalLogins.Count > 1; // || OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
             return PartialView("_RemoveExternalLoginsPartial", externalLogins);
         }
 

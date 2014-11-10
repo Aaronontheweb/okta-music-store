@@ -325,3 +325,20 @@ tr:hover
 {
 	background-color: #fff;
 }
+
+/* This removes the numbers on the Login page */
+
+fieldset ol
+{
+    list-style-type: none;
+}
+
+fieldset label
+{
+    display: block;
+}
+
+fieldset ol li
+{
+    margin: 10px;
+}

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OktaProviders;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -6,6 +7,7 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using System.Web.Security;
 
 namespace Mvc4MusicStore
 {
@@ -25,6 +27,24 @@ namespace Mvc4MusicStore
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AuthConfig.RegisterAuth();
+        }
+        protected void Application_AuthenticateRequest(object sender, EventArgs e)
+        {
+            if (Request.IsAuthenticated)
+            {
+                string loggedUser = HttpContext.Current.User.Identity.Name;
+                var memberUser = (OktaMembershipUser)Membership.GetUser(loggedUser);
+                var roles = Roles.GetRolesForUser(loggedUser);
+                var identity = new OktaIdentity(memberUser.UserName, true)
+                {
+                    FirstName = memberUser.FirstName,
+                    LastName = memberUser.LastName,
+                    PhoneNumber = memberUser.PhoneNumber,
+                    Apps = memberUser.apps,
+                };
+                var principal = new System.Security.Principal.GenericPrincipal(identity, roles);
+                HttpContext.Current.User = principal;
+            }
         }
     }
 }
