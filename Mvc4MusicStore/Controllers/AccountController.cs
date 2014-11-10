@@ -17,6 +17,15 @@ namespace Mvc4MusicStore.Controllers
     [InitializeSimpleMembership]
     public class AccountController : Controller
     {
+        private void MigrateShoppingCart(string UserName)
+        {
+            // Associate shopping cart items with logged-in user
+            var cart = ShoppingCart.GetCart(this.HttpContext);
+
+            cart.MigrateCart(UserName);
+            Session[ShoppingCart.CartSessionKey] = UserName;
+        }
+
         //
         // GET: /Account/Login
 
@@ -37,6 +46,8 @@ namespace Mvc4MusicStore.Controllers
         {
             if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
             {
+                MigrateShoppingCart(model.UserName);
+
                 return RedirectToLocal(returnUrl);
             }
 
@@ -81,6 +92,7 @@ namespace Mvc4MusicStore.Controllers
                 {
                     WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
                     WebSecurity.Login(model.UserName, model.Password);
+                    MigrateShoppingCart(model.UserName);
                     return RedirectToAction("Index", "Home");
                 }
                 catch (MembershipCreateUserException e)
