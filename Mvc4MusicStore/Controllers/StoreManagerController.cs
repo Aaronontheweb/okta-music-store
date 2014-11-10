@@ -6,9 +6,12 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Mvc4MusicStore.Models;
+using Mvc4MusicStore.Filters;
 
 namespace Mvc4MusicStore.Controllers
 {
+    [Authorize(Roles = "Administrator")]
+    [InitializeSimpleMembership]
     public class StoreManagerController : Controller
     {
         private MusicStoreEntities db = new MusicStoreEntities();
