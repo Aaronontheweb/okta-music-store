@@ -8,9 +8,11 @@ namespace Mvc4MusicStore.Controllers
 {
     public class HomeController : Controller
     {
-        public string Index()
+        //
+        // GET: /Home/
+        public ActionResult Index()
         {
-            return "Hello from Home";
+            return View();
         }
     }
 }
