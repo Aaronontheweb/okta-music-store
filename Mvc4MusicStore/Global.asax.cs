@@ -16,6 +16,8 @@ namespace Mvc4MusicStore
     {
         protected void Application_Start()
         {
+            System.Data.Entity.Database.SetInitializer(new Mvc4MusicStore.Models.SampleData());
+
             AreaRegistration.RegisterAllAreas();
 
             WebApiConfig.Register(GlobalConfiguration.Configuration);
