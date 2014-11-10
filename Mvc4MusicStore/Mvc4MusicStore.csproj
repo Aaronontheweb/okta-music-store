@@ -187,6 +187,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ShoppingCartController.cs" />
     <Compile Include="Controllers\StoreController.cs" />
     <Compile Include="Controllers\StoreManagerController.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
@@ -196,10 +197,16 @@
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\Album.cs" />
     <Compile Include="Models\Artist.cs" />
+    <Compile Include="Models\Cart.cs" />
     <Compile Include="Models\Genre.cs" />
     <Compile Include="Models\MusicStoreEntities.cs" />
+    <Compile Include="Models\Order.cs" />
+    <Compile Include="Models\OrderDetail.cs" />
     <Compile Include="Models\SampleData.cs" />
+    <Compile Include="Models\ShoppingCart.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\ShoppingCartRemoveViewModel.cs" />
+    <Compile Include="ViewModels\ShoppingCartViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Images\home-showcase.png" />
@@ -322,6 +329,7 @@
     <Content Include="Views\StoreManager\Create.cshtml" />
     <Content Include="Views\StoreManager\Edit.cshtml" />
     <Content Include="Views\StoreManager\Delete.cshtml" />
+    <Content Include="Views\ShoppingCart\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
