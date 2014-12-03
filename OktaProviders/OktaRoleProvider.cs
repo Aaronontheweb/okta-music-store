@@ -1,4 +1,5 @@
-﻿using Okta.Core;
+﻿// Install Okta.Core via the "Okta SDK" which is available on NuGet
+using Okta.Core;
 using Okta.Core.Clients;
 using Okta.Core.Models;
 using System;
