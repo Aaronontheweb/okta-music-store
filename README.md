@@ -236,6 +236,7 @@ Adding the Okta Membership and Role providers will lay the
 foundation that we'll build on in the rest of this guide.
 
 **These are the steps you'll need to take to add Okta to your Music Store:**
+
 1.  Install the Okta Providers project into your solution.
     -   Download the code to the [Okta Music Store](https://github.com/okta/okta-music-store).
     -   Copy the entire "OktaProviders" sub-folder from
