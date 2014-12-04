@@ -18,12 +18,12 @@
 
 
 
-# Introduction<a id="sec-1"></a>
+# Introduction<a id="sec-1" name="sec-1"></a>
 
 This project is a demonstration of how to add Okta as an identity
 provider for an existing application. 
 
-Rather than concoct a contrived example, I wanted to use an
+Rather than concoct an example, I wanted to use an
 existing sample application that more accurately represents what a
 real-world application would look like. To that end, the sample
 application that I selected is the [MVC Music Store](https://mvcmusicstore.codeplex.com/), which you're
@@ -34,15 +34,12 @@ introduction to the [open source](https://www.asp.net/open-source) [ASP.NET web 
 
 In this document, I will show you how to modify a completed
 MVC Music Store application to use Okta for login, registration,
-Single Sign On, as well as user and group management.
+Single Sign-on, as well as user and group management.
 
 I suggest following this document from beginning to end, as each
-section builds upon the last. If you're in a hurry, you can skip to
-the Online version of the Okta Music Store section to see a "pre
-built" version of the MVC Music Store that has been modified to use
-Okta.
+section builds upon the last. 
 
-# Setup and Configuration<a id="sec-2"></a>
+# Setup and Configuration<a id="sec-2" name="sec-2"></a>
 
 Before you get started, you'll need to install or set up the
 software and services below:
@@ -57,10 +54,10 @@ software and services below:
     this gude.
 3.  *Optional:* Sign up for a [30 day free trial of Zendesk](https://www.zendesk.com/register).
     
-    This isn't strictly required. If you want to see how Okta can
-    help you to seamlessly integrate 3rd party applications, then I
+    This isn't strictly required. If you want to see how Okta enables you
+    to seamlessly integrate 3rd party applications, then I
     suggest signing up for Zendesk, which is the application I use to
-    demonstrate seamless "Single sign-on" in this guide.
+    demonstrate seamless single sign-on in this guide.
 4.  *Optional:* Sign up for a [free trial of Microsoft Azure](http://azure.microsoft.com/en-us/pricing/free-trial/).
     
     This isn't required either. This guide assumes that you'll be
@@ -68,7 +65,7 @@ software and services below:
     computer. However, if you want to host your code somewhere
     public-facing, then Azure is the easiest place to do that.
 
-# MVC 4 Music Store<a id="sec-3"></a>
+# MVC 4 Music Store<a id="sec-3" name="sec-3"></a>
 
 This project builds upon the excellent MVC Music Store
 application. *However* this in this example I use "Visual Studio
@@ -78,12 +75,12 @@ example. At the time that I write this (November 2014), Visual
 Studio Express 2013 for Web is the most recent freely available
 version of Visual Studio Express.
 
-Although it was written for MVC 3, the MVC Music Store
-guide still works with MVC 4, with a few key differences:
+Although they were written for MVC 3, the MVC Music Store
+instructions still work with MVC 4, with a few key differences:
 
 -   **Your project must be created with the ASP.NET MVC 4 "Internet"
-    project template**. Not the "Empty" project template as the guide
-    suggests for MVC 3.
+    project template**. Not the "Empty" project template as the MVC
+    Music Store instructions suggest for MVC 3.
 -   MVC 4 no longer has the built-in "ASP.NET Configuration
     website", so you'll need to create the users and groups mentioned
     in "Part 7: Membership and Authorization" using a different
@@ -94,31 +91,30 @@ guide still works with MVC 4, with a few key differences:
 
 I cover these differences in more detail in the section below.
 
-## Building the MVC Music Store<a id="sec-3-1"></a>
+## Building the MVC Music Store<a id="sec-3-1" name="sec-3-1"></a>
 
 Here is how to get set up on your own computer with Visual Studio
 Express 2013 for Web and a working version of the MVC Music Store
 for MVC 4:
-
 1.  Download and install [Visual Studio Express 2013 for Web](http://www.visualstudio.com/en-us/products/visual-studio-express-vs.aspx).
 2.  Except for the changes listed below, follow the [MVC 3 Music Store](http://www.asp.net/mvc/overview/older-versions/mvc-music-store/mvc-music-store-part-1)
           instructions.
 3.  If you don't want to spend the time to go through the MVC 3 Music
     Store instructions, a completed version of the project is
-    available here: <https://github.com/okta/okta-music-store>
+    included with this project.
 
-## Things to do differently when building the MVC Music Store for ASP.NET MVC 4<a id="sec-3-2"></a>
+## Things to do differently when building the MVC Music Store for ASP.NET MVC 4<a id="sec-3-2" name="sec-3-2"></a>
 
 Here are the things that you'll need to do differently when
 building the MVC Music Store for MVC 4. The changes you'll need to
 make are grouped according to the part of the MVC Music Store
-instructions that you'll need to make the changes in.
+instructions where you'll need to make the changes.
 
-### Changes needed in [Part 1: Overview and File→New Project](http://www.asp.net/mvc/overview/older-versions/mvc-music-store/mvc-music-store-part-1)<a id="sec-3-2-1"></a>
+### Changes needed in [Part 1: Overview and File→New Project](http://www.asp.net/mvc/overview/older-versions/mvc-music-store/mvc-music-store-part-1)<a id="sec-3-2-1" name="sec-3-2-1"></a>
 
-This is the very first part of the MVC Music Store guide, it
-covers what you'll be doing and how to get started. You'll need to
-make the following changes in this part of the guide:
+This is the very first part of the MVC Music Store instructions, they
+cover what you'll be doing and how to get started. You'll need to
+make the following changes in this part of the instructions:
 
 1.  In the section named "Installing the software":
 
@@ -137,17 +133,17 @@ make the following changes in this part of the guide:
         
         ![img](./Documentation/Images/new-mvc4-project.png "Creating a new ASP.NET MVC 4 Project with the "Internet Application" template selected")
 
-### Changes needed in [Part 7: Membership and Authorization](http://www.asp.net/mvc/overview/older-versions/mvc-music-store/mvc-music-store-part-7)<a id="sec-3-2-2"></a>
+### Changes needed in [Part 7: Membership and Authorization](http://www.asp.net/mvc/overview/older-versions/mvc-music-store/mvc-music-store-part-7)<a id="sec-3-2-2" name="sec-3-2-2"></a>
 
-This part of MVC Music Store guide covers adding users and groups
-to the Music Store. This is the part of the guide that changes the
-most with MVC 4. You'll run into a lot of issues here if you did
+This part of MVC Music Store instructions cover adding users and groups
+to the Music Store. This is the part of the instructions that change the
+most with MVC 4. You will run into a lot of issues here if you did
 not select "Internet" as the project template for your
 application!
 
 The major difference here is that you'll need to create your user
 and "Administrator" group using different methods than are described in the MVC 3
-Music Store guide. The details for creating your user and
+Music Store instructions. The details for creating your user and
 "Administrator" group are below:
 
 1.  In the section named "Adding an Administrative User with the ASP.NET Configuration site":
@@ -157,16 +153,14 @@ Music Store guide. The details for creating your user and
     application.
     
     **Creating the "admin@example.com" user:**
-    
     -   Run the code for your project and navigate to
         <code>/Account/Register</code>
     -   Create a user using the webpage at
-        <code>/Account/Register</code>. I suggest sticking with the
-        values suggested by the guide, username: "admin@example.com",
+        <code>/Account/Register</code>. I suggest using the
+        same values suggested by the instructions, username: "admin@example.com",
         password: "password123!"
     
     **Manually adding the "Administrator" group:**
-    
     -   From the "View" menu, select "Server Explorer"
     -   Expand the "Default Connections" section
     -   Expand "DefaultConnection"
@@ -194,7 +188,6 @@ Music Store guide. The details for creating your user and
 
     You'll only need to make two small changes in this section. In
     the *StoreManagerController.cs* file:
-    
     -   Add <code>using Mvc4MusicStore.Filters;</code> to the top of
         the file.
     -   Add <code>[InitializeSimpleMembership]</code> under the
@@ -202,7 +195,7 @@ Music Store guide. The details for creating your user and
         <br />
         ![img](./Documentation/Images/StoreManagerController-updated.png)
 
-# Setting up Okta<a id="sec-4"></a>
+# Setting up Okta<a id="sec-4" name="sec-4"></a>
 
 At this point, you should have your very own Music Store written in
 MVC 4. 
@@ -219,7 +212,6 @@ organization that you created previously (if you haven't signed up
 for the [Okta Developer Edition](http://developer.okta.com/) yet, you need to do that now).
 
 Here's what you'll need to do:
-
 1.  Log in as the administrator user for your Okta account and
     access your [Okta Administrator Dashboard](https://support.okta.com/entries/27416107-What-Can-I-Do-as-an-Administrator-).
 2.  [Create a new Okta group](https://support.okta.com/entries/27340138-Using-the-Okta-People-Page#Groups) called "Administrator".
@@ -227,7 +219,7 @@ Here's what you'll need to do:
 4.  [Get an Okta API token](http://developer.okta.com/docs/getting_started/getting_a_token.html) for your Okta organization. Copy this
     token somewhere as you'll be using it soon.
 
-# Using Okta to authenticate your Music Store users<a id="sec-5"></a>
+# Using Okta to authenticate your Music Store users<a id="sec-5" name="sec-5"></a>
 
 Now that you've finished setting up your Okta organization, we're
 ready to start integrating Okta into your Music Store.
@@ -244,29 +236,35 @@ Adding the Okta Membership and Role providers will lay the
 foundation that we'll build on in the rest of this guide.
 
 **These are the steps you'll need to take to add Okta to your Music Store:**
-
 1.  Install the Okta Providers project into your solution.
     -   Download the code to the [Okta Music Store](https://github.com/okta/okta-music-store).
-    -   Copy "OktaProviders" folder from the Okta Music Store code to
+    -   Copy the entire "OktaProviders" sub-folder from
+        Mvc4MusicStore folder the Okta Music Store code to
         the base folder of your Mvc4MusicStore project.
     -   In the Solution Explorer window, right-click on the
         line that says "Solution 'Mvc4MusicStore'".
-    -   Select "Add", then "Existing Project&#x2026;", then select the
-        OktaProviders folder your just copied.
+    -   Select "Add", then "Existing Project&#x2026;", select the
+        OktaProviders folder your just copied, then select the
+        "OktaProviders.csproj" file in that folder.
 2.  Add a reference to the OktaProviders project.
     -   In Solution Explorer window, expand the "Mvc4MusicStore"
         project, and right-click on "References".
     -   Select "Add Reference&#x2026;"
     -   Click on "Solution" on the left side of the window.
     -   Click on the checkbox next to "OktaProviders".
+    -   Click the "OK" button.
 3.  Add the Okta SDK to the Mvc4MusicStore project from NuGet.
     -   Right click on the Mvc4MusicStore in your Solution Explorer
         window and select "Manage NuGet Packages&#x2026;"
     -   Click on "Online" on the left side of the window.
+    -   Include Prerelease packages by changing the drop-down menu
+        that says "Stable Only" to "Include Prerelease".
     -   Use the search box on the right of the window to search for
         "Okta".
     -   When you see the "Okta SDK" package, click on the "Install"
         button for that package.
+    -   When the Okta SDK installation completes, click the "Close"
+        button on the "Manage NuGet Packages" window.
 4.  Add the Okta SDK to the OktaProviders project from NuGet.
     -   Follow the same steps above, but for the "OktaProviders" project.
 5.  Edit the "Web.config" file in the Mvc4MusicStore project.
@@ -301,6 +299,7 @@ foundation that we'll build on in the rest of this guide.
     ```
 
 **Try it out: Log in to the Music Store using Okta**
+
 
 1.  Start the Music Store from Visual Studio using the "Play" button
     or by selecting the "DEBUG" menu and selecting "Start Debugging".
@@ -345,7 +344,7 @@ breakpoint is reached. Once you get to the breakpoint, step through
 the code by pressing the "Step Into" button
 ![img](./Documentation/Images/Step-Into-Button.png) in the Visual Studio toolbar.
 
-# Accessing Okta user profile data from the Music Store<a id="sec-6"></a>
+# Accessing Okta user profile data from the Music Store<a id="sec-6" name="sec-6"></a>
 
 In the previous section, we integrated Okta into the Music Store and
 tested the integration by logging in to the Music Store with an Okta
@@ -364,7 +363,6 @@ organziation-specific custom attributes.
 At a high level, here is what we'll need to do to enable the Music
 Store to make use of the "firstName", "lastName", and "mobilePhone"
 user attributes that Okta stores by default:
-
 -   Extend the [MembershipUser](http://msdn.microsoft.com/en-us/library/system.web.security.membershipuser%28v=vs.100%29.aspx) class to store those additional
     attributes.
 -   Write our own implementation of the [IIdentity](http://msdn.microsoft.com/en-us/library/system.security.principal.iidentity%28v=vs.110%29.aspx) interface that is
@@ -449,7 +447,6 @@ users and the "[WebSecurity.GetUserId](https://github.com/ASP-NET-MVC/aspnetwebs
 MembershipUser objects are identified by integers).
 
 Here are the changes you'll need to make:
-
 1.  In the <code>public ActionResult Disassociate(string provider, string providerUserId)</code> method:<br />
     Change:<br/>
     
@@ -605,7 +602,7 @@ It should look like this:
     the one depicted below.
     ![img](./Documentation/Images/Registration-form.png)
 
-# Managing your users and groups from inside the Music Store<a id="sec-7"></a>
+# Managing your users and groups from inside the Music Store<a id="sec-7" name="sec-7"></a>
 
 While it is always possible to do user and group management
 from the administrator interface of your Okta organization, most of
@@ -630,7 +627,7 @@ are called "Roles" in ASP.NET), all that we need to do is add some
 UI on top of these providers.
 
 Following the same techniques and principles that are taught in the
-MVC Music Store guide, I wrote some basic User and Group management
+MVC Music Store instructions, I wrote some basic User and Group management
 code for the [Okta Music Store](https://github.com/okta/okta-music-store). Since I expect that you've already learned
 how to build this sort of UI, let's just copy over the code so you
 can see how it works.
@@ -640,19 +637,16 @@ can see how it works.
 In the Windows File Explorer, open folder for the Okta Music Store, navigate to
 the "Controllers" folder and copy the following two files into the
 "Controllers" folder for your project:
-
 1.  "UserManagerController.cs"
 2.  "GroupManagerController.cs"
 
 Next, navigate to the "Models" folder and copy the following two
 files into the "Models" folder for your project:
-
 1.  "StoreUser.cs"
 2.  "UserGroup.cs"
 
 Lastly, navigate to the "Views" folder and copy the following two
 folders into the "Views" folder for your project:
-
 1.  "GroupManager"
 2.  "UserManager"
 
@@ -731,7 +725,7 @@ will notice that the groups that this code uses are all prepended
 with the text "brand:" - this is done to distinguish the groups that
 are used by the Music Store from other groups in the Okta organization.
 
-# Set up contextual navigation links to the Music Store<a id="sec-8"></a>
+# Set up contextual navigation links to the Music Store<a id="sec-8" name="sec-8"></a>
 
 At this point in the guide, we've added a lot of new features to the
 Music Store but none of those features are available through the
@@ -806,7 +800,7 @@ You'll notice that the link to the store manager is no longer
 visible. That is because the updated code will only show that link
 of the user is in the "Administrator" group.
 
-# *Optional:* Adding Single-sign on to your Music Store<a id="sec-9"></a>
+# *Optional:* Adding Single-sign on to your Music Store<a id="sec-9" name="sec-9"></a>
 
 At this point your Music Store will have all of the basics of user
 authentication and authorization working: Users can register, log in
@@ -832,7 +826,6 @@ new account.
 
 Here is a high level overview of the steps required to enable your
 Music Store users to use Single sign-on to connect to Zendesk:
-
 -   Add Zendesk to your Okta organization
 -   Update the Music Store to support Okta Single sign-on
 
@@ -851,14 +844,12 @@ To configure Okta and Zendesk, you can either follow these
 Make sure you do the following when you set up Zendesk:
 
 From Okta:
-
 -   Configure Zendesk to use the "SAML 2.0" sign on method
 -   Enable provisioning features for Zendesk
 -   Enable the "Create Users" provisioning feature
 -   Assign Zendesk to the "Everyone" group
 
 From Zendesk:
-
 -   Enable SAML SSO for End-users. This option is found in the "End
     User" tab on the "Security" page for Zendesk.
 
@@ -933,14 +924,13 @@ Here is what it should look like:
 4.  Click on the "Zendesk" link.
 5.  You should be automatically logged in to Zendesk
 
-# Closing<a id="sec-10"></a>
+# Closing<a id="sec-10" name="sec-10"></a>
 
 In this document, you learned how to build the "MVC Music Store"
 project in ASP.NET MVC 4, and how to use Okta as an identity provider in
 an MVC 4 project.
 
 In particular, this document demonstrated how to do the following:
-
 -   Use Okta to store, manage, and authenticate users.
 -   Store and display extended user profile attributes in Okta.
 -   Federate an Okta powered website with another website that
@@ -949,7 +939,6 @@ In particular, this document demonstrated how to do the following:
 While this document does cover quite a bit of ground, it does not
 cover all the features of the Okta Developer API. A few examples of
 features that this document does not cover are:
-
 -   External directory federation.
 -   Enabling [CORS](http://developer.okta.com/docs/getting_started/enabling_cors.html).
 -   The [Sessions](http://developer.okta.com/docs/api/rest/sessions.html) API and [Events](http://developer.okta.com/docs/api/rest/events.html) API.
@@ -958,7 +947,6 @@ features that this document does not cover are:
 
 You can learn more about the Okta API by doing one or more of the
 following:
-
 -   Read the source code for the Membership and Role providers in this
     project. The files for those providers are in the "OktaProviders"
     folder of this project.
@@ -966,7 +954,6 @@ following:
 
 Lastly, if you're curious about how Membership and Role providers are
 implemented, here are the links that I found useful:
-
 -   [Implementing a Membership Provider](http://msdn.microsoft.com/en-us/library/f1kyba5e%28v=vs.100%29.aspx).
 -   [Adding Security and Membership to an ASP.NET Web Pages (Razor)
     Site](http://www.asp.net/web-pages/overview/security/16-adding-security-and-membership).

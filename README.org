@@ -227,6 +227,8 @@
        - Right click on the Mvc4MusicStore in your Solution Explorer
          window and select "Manage NuGet Packages..."
        - Click on "Online" on the left side of the window.
+       - Include Prerelease packages by changing the drop-down menu
+         that says "Stable Only" to "Include Prerelease".
        - Use the search box on the right of the window to search for
          "Okta".
        - When you see the "Okta SDK" package, click on the "Install"
