@@ -96,6 +96,7 @@ I cover these differences in more detail in the section below.
 Here is how to get set up on your own computer with Visual Studio
 Express 2013 for Web and a working version of the MVC Music Store
 for MVC 4:
+
 1.  Download and install [Visual Studio Express 2013 for Web](http://www.visualstudio.com/en-us/products/visual-studio-express-vs.aspx).
 2.  Except for the changes listed below, follow the [MVC 3 Music Store](http://www.asp.net/mvc/overview/older-versions/mvc-music-store/mvc-music-store-part-1)
           instructions.
@@ -153,6 +154,7 @@ Music Store instructions. The details for creating your user and
     application.
     
     **Creating the "admin@example.com" user:**
+    
     -   Run the code for your project and navigate to
         <code>/Account/Register</code>
     -   Create a user using the webpage at
@@ -161,6 +163,7 @@ Music Store instructions. The details for creating your user and
         password: "password123!"
     
     **Manually adding the "Administrator" group:**
+    
     -   From the "View" menu, select "Server Explorer"
     -   Expand the "Default Connections" section
     -   Expand "DefaultConnection"
@@ -188,6 +191,7 @@ Music Store instructions. The details for creating your user and
 
     You'll only need to make two small changes in this section. In
     the *StoreManagerController.cs* file:
+    
     -   Add <code>using Mvc4MusicStore.Filters;</code> to the top of
         the file.
     -   Add <code>[InitializeSimpleMembership]</code> under the
@@ -212,6 +216,7 @@ organization that you created previously (if you haven't signed up
 for the [Okta Developer Edition](http://developer.okta.com/) yet, you need to do that now).
 
 Here's what you'll need to do:
+
 1.  Log in as the administrator user for your Okta account and
     access your [Okta Administrator Dashboard](https://support.okta.com/entries/27416107-What-Can-I-Do-as-an-Administrator-).
 2.  [Create a new Okta group](https://support.okta.com/entries/27340138-Using-the-Okta-People-Page#Groups) called "Administrator".
@@ -364,14 +369,14 @@ organziation-specific custom attributes.
 At a high level, here is what we'll need to do to enable the Music
 Store to make use of the "firstName", "lastName", and "mobilePhone"
 user attributes that Okta stores by default:
+
 -   Extend the [MembershipUser](http://msdn.microsoft.com/en-us/library/system.web.security.membershipuser%28v=vs.100%29.aspx) class to store those additional
     attributes.
 -   Write our own implementation of the [IIdentity](http://msdn.microsoft.com/en-us/library/system.security.principal.iidentity%28v=vs.110%29.aspx) interface that is
     also aware of the additional attributes.
 -   Make our implementation of the IIdentity interface available to
     the to the rest of our code in "[HttpContext.Current.User](http://msdn.microsoft.com/en-us/library/system.web.httpcontext.user%28v=vs.110%29.aspx)"
-    by handling the "AuthenticateRequest" event in the [
-    ASP.NET Application Life Cycle](http://msdn.microsoft.com/en-us/library/ms178473%28v=vs.80%29.aspx). This is done by writing our own
+    by handling the "AuthenticateRequest" event in the [ASP.NET Application Life Cycle](http://msdn.microsoft.com/en-us/library/ms178473%28v=vs.80%29.aspx). This is done by writing our own
     "[Application\_AuthenticateRequest](http://smehrozalam.wordpress.com/2009/01/01/using-customprincipal-with-forms-authentication-in-aspnet/)" method.
 -   Fix an issue with the template code in the Account controller that
     conflicts with the Okta membership provider.
@@ -448,6 +453,7 @@ users and the "[WebSecurity.GetUserId](https://github.com/ASP-NET-MVC/aspnetwebs
 MembershipUser objects are identified by integers).
 
 Here are the changes you'll need to make:
+
 1.  In the <code>public ActionResult Disassociate(string provider, string providerUserId)</code> method:<br />
     Change:<br/>
     
@@ -638,16 +644,19 @@ can see how it works.
 In the Windows File Explorer, open folder for the Okta Music Store, navigate to
 the "Controllers" folder and copy the following two files into the
 "Controllers" folder for your project:
+
 1.  "UserManagerController.cs"
 2.  "GroupManagerController.cs"
 
 Next, navigate to the "Models" folder and copy the following two
 files into the "Models" folder for your project:
+
 1.  "StoreUser.cs"
 2.  "UserGroup.cs"
 
 Lastly, navigate to the "Views" folder and copy the following two
 folders into the "Views" folder for your project:
+
 1.  "GroupManager"
 2.  "UserManager"
 
@@ -827,6 +836,7 @@ new account.
 
 Here is a high level overview of the steps required to enable your
 Music Store users to use Single sign-on to connect to Zendesk:
+
 -   Add Zendesk to your Okta organization
 -   Update the Music Store to support Okta Single sign-on
 
@@ -845,12 +855,14 @@ To configure Okta and Zendesk, you can either follow these
 Make sure you do the following when you set up Zendesk:
 
 From Okta:
+
 -   Configure Zendesk to use the "SAML 2.0" sign on method
 -   Enable provisioning features for Zendesk
 -   Enable the "Create Users" provisioning feature
 -   Assign Zendesk to the "Everyone" group
 
 From Zendesk:
+
 -   Enable SAML SSO for End-users. This option is found in the "End
     User" tab on the "Security" page for Zendesk.
 
@@ -932,6 +944,7 @@ project in ASP.NET MVC 4, and how to use Okta as an identity provider in
 an MVC 4 project.
 
 In particular, this document demonstrated how to do the following:
+
 -   Use Okta to store, manage, and authenticate users.
 -   Store and display extended user profile attributes in Okta.
 -   Federate an Okta powered website with another website that
@@ -940,6 +953,7 @@ In particular, this document demonstrated how to do the following:
 While this document does cover quite a bit of ground, it does not
 cover all the features of the Okta Developer API. A few examples of
 features that this document does not cover are:
+
 -   External directory federation.
 -   Enabling [CORS](http://developer.okta.com/docs/getting_started/enabling_cors.html).
 -   The [Sessions](http://developer.okta.com/docs/api/rest/sessions.html) API and [Events](http://developer.okta.com/docs/api/rest/events.html) API.
@@ -948,6 +962,7 @@ features that this document does not cover are:
 
 You can learn more about the Okta API by doing one or more of the
 following:
+
 -   Read the source code for the Membership and Role providers in this
     project. The files for those providers are in the "OktaProviders"
     folder of this project.
@@ -955,6 +970,7 @@ following:
 
 Lastly, if you're curious about how Membership and Role providers are
 implemented, here are the links that I found useful:
+
 -   [Implementing a Membership Provider](http://msdn.microsoft.com/en-us/library/f1kyba5e%28v=vs.100%29.aspx).
 -   [Adding Security and Membership to an ASP.NET Web Pages (Razor)
     Site](http://www.asp.net/web-pages/overview/security/16-adding-security-and-membership).
